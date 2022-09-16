@@ -1,0 +1,35 @@
+## #Loading the required libraries  
+import pandas as pd
+import requests
+import csv
+import time
+#Setting seed page  
+URL = "https://www.in.gov.br/en/web/dou/-/instrucao-normativa-in-n-86-de-12-de-marco-de-2021-309013946" 
+print('Planting the seed...')
+time.sleep(1.5)
+##Fetching data using requests Lib API 
+html = requests.get(URL).content
+print('Fetching content...one second please...')
+time.sleep(1.5)
+## Parsing the data to a pandas dataframe
+df_list = pd.read_html(html,encoding='UTF-8')
+print('Checking if everything we need is here in order to proceed...')
+time.sleep(2.0)
+##Data wrangling using pandas Lib
+df = pd.concat([df for df in df_list]) 
+df.drop([0,1],axis=1,inplace=True)
+df.columns = df.iloc[0] 
+df = df[1:]
+print('Wrangling some data...it will be done in a bit...')
+time.sleep(1.0)
+print('Done...')
+
+## Checking if everything is ok and what type of data we got
+##df.info()
+
+##Dataviz
+##display(df.head())  
+
+##Writing as an excel file using pandas
+df.to_excel('insert_excel_filename_here.xlsx', index=False)
+print('Your file is ready !!') 
